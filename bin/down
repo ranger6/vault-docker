@@ -2,4 +2,4 @@
 
 #	down -- shutdown vault
 
-docker-compose down
+docker-compose --env-file private/credentials down

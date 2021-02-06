@@ -2,4 +2,4 @@
 
 #	up -- run a vault dev server via docker-compose in the background
 
-docker-compose up -d
+docker-compose --env-file private/credentials up -d
