@@ -11,20 +11,19 @@ the `docker-compose.yml` file.  More advanced configurations--especially non-\'d
 
 Two shorthand scripts found in `bin` indicate how the image is run.
 
+When the Vault server comes up, it will be sealed.  Before anything can be done to the server, it must be unsealed.  The Vault CLI needs to be run to [unseal the vault](https://learn.hashicorp.com/tutorials/vault/getting-started-deploy?in=vault/getting-started#initializing-the-vault).
+
 ## CLI
 
 It is assumed that the [Vault CLI](https://www.vaultproject.io/downloads) might be used to communicate with the Vault container and that the CLI is run outside of Docker.
 
-In "dev mode", the Vault server is not using HTTPS. The Vault CLI will try to use HTTPS by default, resulting in an error. You can fix this by running the CLI with the `VAULT_ADDR` environment variable set.  The default address/URL is "http://127.0.0.0:8200"
+The Vault CLI will try to use HTTPS by default, resulting in an error if the Vault server is not using tls. You can fix this by running the CLI with the `VAULT_ADDR` environment variable set.  The default address/URL is "http://127.0.0.0:8200"
 
 ## Files
 
-1. `docker-compose.override.yml` contains non-generic, local configuration.
-2. `private/credentials` The "private" directory should not be included in the git repo.
+1. The `volumes` directory contains filesystems mounted for the Vault server.  Except for the `config` directory, these are excluded from the repo.
 
 ## Set Up
 
-1. Create the private/credentials file and set the permissions so others can not read or write the directory/file.  The credentials file is sourced by `docker-compose` and the value is used in `docker-compose.override.yml`. Set the desired E_VAULT_DEV_ROOT_TOKEN_ID value. For example:
-```
-E_VAULT_DEV_ROOT_TOKEN_ID="myroottoken"
-```
+1. Run `bin/init` to create the volumes that will be mounted by the Vault server.
+
