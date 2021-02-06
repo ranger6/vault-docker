@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#	run -- run a dev version of vault on default port
+#	       check docker log for root token
+
+docker run -p 8200:8200 --cap-add=IPC_LOCK -d --name=dev-vault vault
+
+# docker ps
+# docker stop <container ref>
+# docker rm <container ref>

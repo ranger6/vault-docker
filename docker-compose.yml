@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    dev-vault:
+        image: vault
+        ports:
+            - 8200:8200
+        cap_add:
+            - IPC_LOCK
