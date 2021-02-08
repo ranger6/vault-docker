@@ -8,10 +8,11 @@ services:
         volumes:
             - ./volumes/file:/vault/file
             - ./volumes/config:/vault/config
+            - ./volumes/tls:/vault/tls
         environment:
             - VAULT_LOG_LEVEL=info
-            - VAULT_ADDR=http://127.0.0.1:8200
-            - VAULT_API_ADDR=http://127.0.0.1:8200
+            - VAULT_ADDR=https://127.0.0.1:8200
+            - VAULT_API_ADDR=https://127.0.0.1:8200
         cap_add:
             - IPC_LOCK
         command: server

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#	gencerts -- generate CA and server certs for Vault, results placed in the "out" directory
+
+echo "Creating Vault CA ('vault-ca') and Vault server ('vault') certificates"
+echo "Hit 'return' at each passphrase prompt to create cleartest keys"
+echo "Results will be placed in the directory 'out'"
+
+vault_domain="${E_VAULT_HOSTNAME:-vault}"
+
+certstrap init --cn vault-ca
+certstrap request-cert --domain "$vault_domain" --ip 127.0.0.1
+certstrap sign "$vault_domain" --CA vault-ca
+
+if [ "${vault_domain}" != "vault" ]
+then
+    ln -f "out/${vault_domain}.crt" out/vault.crt
+    ln -f "out/${vault_domain}.key" out/vault.key
+fi
