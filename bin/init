@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir -p private
+set -o noclobber
+echo 'E_VAULT_DEV_ROOT_TOKEN_ID="define_a_root_token_here"' > private/credentials
+chmod 600 private/credentials
