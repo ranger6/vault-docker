@@ -10,7 +10,7 @@ One major motivation for creating this repo was for use with the Concourse CI se
 The preferred method to configure Vault is via running `docker-compose` and using
 the `docker-compose.yml` file.  More advanced configurations--especially non-\'dev\' instances--requiring certificates, mounted volumes, etc. are detailed on other branches.
 
-When the Vault server is using tls, it needs its own certificate and key.  Generally, clients
+When the Vault server is using TLS, it needs its own certificate and key.  Generally, clients
 will need the Certificate Authority certificate that signed the Vault server certificate. One
 key client is the Vault CLI.  This (according to the Vault documentation) may be provided by
 the host operating system.  Or, it can be provided via the VAULT_CACERT environment variable.
@@ -23,7 +23,9 @@ When the Vault server comes up, it will be sealed.  Before anything can be done 
 
 ## CLI
 
-It is assumed that the [Vault CLI](https://www.vaultproject.io/downloads) used to communicate with the Vault container will be run outside of Docker.  It is possible to run the CLI in a container, but the configuration for this case is not covered here.
+It is assumed that the [Vault CLI](https://www.vaultproject.io/downloads) used to communicate with the
+Vault container will be run outside of Docker.  For this, one needs to download the native binary (or build
+from source). It is possible to run the CLI in a container, but the configuration for this case is not covered here.
 
 ## Files
 
@@ -34,9 +36,13 @@ It is assumed that the [Vault CLI](https://www.vaultproject.io/downloads) used t
 
 2. The Vault config file is found in `volumes/config/vault.json`    
 
-3. The minimum certificates needed to enable tls are:
+3. The minimum certificates needed to enable TLS are:
     1.  The vault server certificate: `volumes/tls/vault.crt`
     2.  The vault certificate key: `volumes/tls/vault.key`
+
+4. When the "cert" authentication method is used, the CA certificates for the issuer of the client certificates need
+to be available to Vault.  (According to the documentation, individual certificates are accepted as well). These
+are provisioned with the CLI (or the web UI).
 
 ## Set Up
 
@@ -54,3 +60,6 @@ IP addresses in the certificate (and in the CA certificate?) may make a differen
 For example, the Concourse client requires that the certificate contain the name used as
 the Vault host in the API URL. The E_VAULT_HOSTNAME variable in the `gencerts` script can
 be set to the same value that Concourse uses to access Vault.
+3. When the "cert" authentication method is going to be used, then the certificate of the CA
+used to issue client certificates is provisioned after Vault is running. In simple configurations
+(like this one!), this can be the same CA that issued the Vault server certs.
