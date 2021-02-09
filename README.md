@@ -35,6 +35,9 @@ It is assumed that the [Vault CLI](https://www.vaultproject.io/downloads) used t
 Vault container will be run outside of Docker.  For this, one needs to download the native binary (or build
 from source). It is possible to run the CLI in a container, but the configuration for this case is not covered here.
 
+The Vault "dev" server does not use TLS, so the URL for the CLI and the web UI must be "http" and not "https".
+To override the default for the "dev", export the VAULT_ADDR environment variable: `export VAULT_ADDR='http://127.0.0.1:8200'`.
+
 ## Files
 
 1. The `volumes` directory contains filesystems mounted for the Vault server.  Except for the `config` directory, these are excluded from the repo. See `docker-compose.yml` for how the following volumes are mounted in the Vault container:
